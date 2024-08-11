@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text Summarizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f2f2f2;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #recordButton {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        #recordButton:hover {
+            background-color: #0056b3;
+        }
+
+        #recordedText,
+        #summary {
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 600px;
+            word-wrap: break-word;
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Speech to Text Summarizer</h1>
+
+    <button id="recordButton">Record Speech</button>
+
+    <div id="recordedText"></div>
+    <div id="summary"></div>
+
+    <script>
+        document.getElementById("recordButton").addEventListener("click", function () {
+            // Display message while recording
+            document.getElementById("recordedText").innerText = "Recording...";
+
+            // Send request to Python script to record audio and perform summarization
+            fetch("/record_and_summarize")
+                .then(response => response.json())
+                .then(data => {
+                    // Display recorded text and summary on the page
+                    document.getElementById("recordedText").innerText = "Recorded Text:\n" + data.recorded_text;
+                    document.getElementById("summary").innerText = "Summary:\n" + data.summary;
+                })
+                .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+
+</html>
